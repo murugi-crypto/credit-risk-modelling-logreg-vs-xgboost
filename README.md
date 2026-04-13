@@ -6,12 +6,14 @@ This project implements an end-to-end credit risk modeling pipeline using the Ge
 The focus is not only on predictive performance, but also on interpretable, decision-oriented modeling for credit risk applications.
 
 **Objective**
+
 Predict probability of credit default (good vs bad clients)
 Compare Logistic Regression and XGBoost performance
 Analyze the impact of decision thresholds on model behavior
 Evaluate trade-offs between sensitivity (risk capture) and specificity (loan approval accuracy)
 
 **Dataset**
+
 Source: German Credit Dataset
 Observations: 1000 applicants
 Target distribution:
@@ -22,6 +24,7 @@ The target variable was corrected to ensure:
 1 = Default (Bad credit risk), 0 = Non-default (Good credit risk)
 
 **Data Preprocessing**
+
 Converted categorical variables into factors
 Applied one-hot encoding using caret::dummyVars
 Ensured consistent feature space across models
@@ -29,6 +32,7 @@ Performed a 70/30 train-test split
 Standardized target variable encoding for correct interpretation
 
 **Models Implemented**
+
 1. Logistic Regression
 Baseline interpretable model
 Provides probabilistic outputs
@@ -48,11 +52,13 @@ Trained using xgb.train()
 To reflect real-world credit decision-making, probability thresholds were tested:
 
 **Threshold	Behavior**
+
 0.5	- Conservative classification (balanced baseline)
 0.4 - Best trade-off between sensitivity and specificity
 0.3	- High recall but aggressive rejection of good clients
 
 **Model Performance**
+
 Logistic Regression (Best at threshold = 0.4)
 Accuracy: ~74%
 AUC: ~0.77
@@ -68,6 +74,7 @@ Specificity: 83.3%
 Balanced Accuracy: 70.3%
 
 **Key Insights**
+
 Both models achieved similar predictive power (AUC ≈ 0.77)
 Logistic Regression performed slightly better in capturing defaulters
 XGBoost performed better in protecting good clients
@@ -94,6 +101,7 @@ Proper preprocessing and feature encoding are crucial
 Threshold tuning has a greater operational impact than model complexity
 
 **Tools & Libraries**
+
 R
 caret
 xgboost
