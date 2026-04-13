@@ -60,18 +60,20 @@ To reflect real-world credit decision-making, probability thresholds were tested
 **Model Performance**
 
 Logistic Regression (Best at threshold = 0.4)
-Accuracy: ~74%
-AUC: ~0.77
-Sensitivity: 60.4%
-Specificity: 80.4%
-Balanced Accuracy: 70.4%
+
+*Accuracy: ~74%
+*AUC: ~0.77
+*Sensitivity: 60.4%
+*Specificity: 80.4%
+*Balanced Accuracy: 70.4%
 
 XGBoost (Tuned, Best at threshold = 0.4)
-Accuracy: ~74–75%
-AUC: ~0.77
-Sensitivity: 57.3%
-Specificity: 83.3%
-Balanced Accuracy: 70.3%
+
+*Accuracy: ~74–75%
+*AUC: ~0.77
+*Sensitivity: 57.3%
+*Specificity: 83.3%
+*Balanced Accuracy: 70.3%
 
 **Key Insights**
 
@@ -102,11 +104,11 @@ Threshold tuning has a greater operational impact than model complexity
 
 **Tools & Libraries**
 
-R
-caret
-xgboost
-pROC
-ggplot2
+*R
+*caret
+*xgboost
+*pROC
+*ggplot2
 
 **Author**
 
