@@ -41,10 +41,10 @@ Suitable for benchmarking and explainability
 2. XGBoost (Gradient Boosting)
 Non-linear ensemble model
 Tuned to reduce overfitting:
-max_depth = 3
-eta = 0.05
-subsample = 0.8
-colsample_bytree = 0.8
+max_depth = 3,
+eta = 0.05,
+subsample = 0.8,
+colsample_bytree = 0.8. 
 Trained using xgb.train()
 
 **Threshold Analysis**
@@ -75,11 +75,11 @@ Balanced Accuracy: 70.3%
 
 **Key Insights**
 
-Both models achieved similar predictive power (AUC ≈ 0.77)
-Logistic Regression performed slightly better in capturing defaulters
-XGBoost performed better in protecting good clients
-Model performance is highly sensitive to classification threshold selection
-The optimal operating point for this dataset is threshold = 0.4
+*Both models achieved similar predictive power (AUC ≈ 0.77). 
+*Logistic Regression performed slightly better in capturing defaulters.
+*XGBoost performed better in protecting good clients.
+*Model performance is highly sensitive to classification threshold selection
+*The optimal operating point for this dataset is threshold = 0.4
 
 **Business Interpretation**
 
