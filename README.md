@@ -7,10 +7,10 @@ The focus is not only on predictive performance, but also on interpretable, deci
 
 **Objective**
 
-Predict probability of credit default (good vs bad clients)
-Compare Logistic Regression and XGBoost performance
-Analyze the impact of decision thresholds on model behavior
-Evaluate trade-offs between sensitivity (risk capture) and specificity (loan approval accuracy)
+Predict probability of credit default (good vs bad clients). 
+Compare Logistic Regression and XGBoost performance.
+Analyze the impact of decision thresholds on model behavior.
+Evaluate trade-offs between sensitivity (risk capture) and specificity (loan approval accuracy).
 
 **Dataset**
 
