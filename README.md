@@ -1,125 +1,106 @@
-# Credit Risk Modelling: Logistic Regression vs XGBoost
+Credit Risk Modelling: Logistic Regression vs XGBoost
+Overview
 
-# Overview
+This project implements an end-to-end credit risk modeling pipeline using the German Credit dataset. It compares two classification approaches — Logistic Regression and XGBoost — to predict loan default risk and evaluates how classification thresholds impact business-relevant outcomes.
 
-This project develops and compares two classification models — Logistic Regression and XGBoost — to predict credit default risk using the German Credit dataset.
+The focus is not only on predictive performance, but also on interpretable, decision-oriented modeling for credit risk applications.
 
-A unified preprocessing pipeline was implemented to ensure consistency across models, enabling a fair and reliable comparison of performance.
+Objective
+Predict probability of credit default (good vs bad clients)
+Compare Logistic Regression and XGBoost performance
+Analyze the impact of decision thresholds on model behavior
+Evaluate trade-offs between sensitivity (risk capture) and specificity (loan approval accuracy)
 
----
+Dataset
+Source: German Credit Dataset
+Observations: 1000 applicants
+Target distribution:
+70% Good credit clients (0)
+30% Bad credit clients (1)
 
-# Objectives
+The target variable was corrected to ensure:
+1 = Default (Bad credit risk), 0 = Non-default (Good credit risk)
 
-* Predict probability of default (credit risk)
-* Compare Logistic Regression and XGBoost performance
-* Evaluate the impact of classification thresholds
-* Balance business trade-offs between risk and profitability
+Data Preprocessing
+Converted categorical variables into factors
+Applied one-hot encoding using caret::dummyVars
+Ensured consistent feature space across models
+Performed a 70/30 train-test split
+Standardized target variable encoding for correct interpretation
 
----
+Models Implemented
+1. Logistic Regression
+Baseline interpretable model
+Provides probabilistic outputs
+Suitable for benchmarking and explainability
 
-# Key Results
+2. XGBoost (Gradient Boosting)
+Non-linear ensemble model
+Tuned to reduce overfitting:
+max_depth = 3
+eta = 0.05
+subsample = 0.8
+colsample_bytree = 0.8
+Trained using xgb.train()
 
-| Model               | AUC        |
-| ------------------- | ---------- |
-| Logistic Regression | 0.7737 |
-| XGBoost             | 0.7708 |
+Threshold Analysis
 
-# Best Performing Configuration
+To reflect real-world credit decision-making, probability thresholds were tested:
 
-* Model: XGBoost (tuned)
-* Threshold: 0.4
-* Recall: 97.1%
-* Accuracy: 76.0%
+Threshold	Behavior
+0.5	- Conservative classification (balanced baseline)
+0.4 - Best trade-off between sensitivity and specificity
+0.3	- High recall but aggressive rejection of good clients
 
----
+Model Performance
+Logistic Regression (Best at threshold = 0.4)
+Accuracy: ~74%
+AUC: ~0.77
+Sensitivity: 60.4%
+Specificity: 80.4%
+Balanced Accuracy: 70.4%
 
-# Key Insights
+XGBoost (Tuned, Best at threshold = 0.4)
+Accuracy: ~74–75%
+AUC: ~0.77
+Sensitivity: 57.3%
+Specificity: 83.3%
+Balanced Accuracy: 70.3%
 
-* Both models demonstrated similar predictive power (AUC ≈ 0.77)
-* XGBoost achieved higher recall, making it more effective at detecting defaulters
-* Logistic Regression provided a better balance between sensitivity and specificity
-* Threshold tuning significantly impacted model performance
-* Model complexity did not necessarily lead to improved discrimination
+Key Insights
+Both models achieved similar predictive power (AUC ≈ 0.77)
+Logistic Regression performed slightly better in capturing defaulters
+XGBoost performed better in protecting good clients
+Model performance is highly sensitive to classification threshold selection
+The optimal operating point for this dataset is threshold = 0.4
 
----
-
-# Tools & Libraries
-
-* R
-* caret
-* xgboost
-* pROC
-
----
-
-# Data Preprocessing
-
-* Conerted categorical variables to factors
-* Applied one-hot encoding for consistency across models
-* Created binary target variable (`credit_risk`)
-* Performed 70/30 train-test split
-
----
-
-# Models Used
-
-# Logistic Regression
-
-* Baseline model
-* Interpretable coefficients
-* Balanced classification performance
-
-# XGBoost
-
-* Gradient boosting model
-* Tuned hyperparameters to reduce overfitting
-* Optimized classification threshold
-
----
-
-# Business Interpretation
+Business Interpretation
 
 In credit risk modeling:
 
-* False Negatives (missed defaulters) → financial loss
-* False Positives (rejected good applicants) → lost revenue
+False Negatives (missed defaulters) → direct financial loss
+False Positives (rejecting good clients) → lost revenue opportunity
 
-This project demonstrates how model selection and threshold tuning must align with a financial institution’s risk appetite.
+This project demonstrates that:
 
----
+Model selection alone is insufficient — decision thresholds are equally critical in aligning predictions with business risk appetite.
 
-# Project Structure
+Conclusion
 
-```
-credit-risk-modelling/
-│
-├── credit_risk_model.Rmd
-├── credit_risk_model.html
-├── README.md
-```
+Despite using a more complex ensemble method, XGBoost did not significantly outperform Logistic Regression in this structured dataset. This highlights that:
 
----
+Simpler models can perform competitively in credit scoring tasks
+Proper preprocessing and feature encoding are crucial
+Threshold tuning has a greater operational impact than model complexity
 
-# How to Run
+Tools & Libraries
+R
+caret
+xgboost
+pROC
+ggplot2
 
-1. Open `credit_risk_model.Rmd` in RStudio
-2. Click Knit to generate the report
-
----
-
-# Conclusion
-
-Although XGBoost is a more complex model, it did not significantly outperform Logistic Regression in terms of AUC. The main differences arose from threshold selection and classification behavior.
-
-This highlights the importance of:
-
-* Proper preprocessing
-* Model interpretability
-* Alignment with business objectives
-
----
-
-# Author
+Author
 
 Bridget Murugi
-
+Actuarial Science | Credit Risk Modeling | Data Analytics
