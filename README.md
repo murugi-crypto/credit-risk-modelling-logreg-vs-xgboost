@@ -1,17 +1,17 @@
-Credit Risk Modelling: Logistic Regression vs XGBoost
-Overview
+**Credit Risk Modelling: Logistic Regression vs XGBoost**
+***Overview***
 
 This project implements an end-to-end credit risk modeling pipeline using the German Credit dataset. It compares Logistic Regression and XGBoost models to predict loan default risk and evaluates how classification thresholds impact business-relevant outcomes.
 
 The focus is on predictive performance as well as interpretable, decision-oriented modeling for credit risk applications.
 
-Objective
+***Objective***
 Predict probability of credit default (good vs bad clients)
 Compare Logistic Regression and XGBoost performance
 Analyze the impact of classification thresholds on model behavior
 Evaluate trade-offs between sensitivity (risk capture) and specificity (loan approval accuracy)
 
-Dataset
+***Dataset***
 Source: German Credit Dataset
 Observations: 1000 applicants
 Target distribution:
@@ -23,14 +23,14 @@ The target variable is defined as:
 1 = Default (Bad credit risk)
 0 = Non-default (Good credit risk)
 
-Data Preprocessing
+***Data Preprocessing***
 Converted categorical variables into factors
 Applied one-hot encoding using caret::dummyVars
 Ensured consistent feature representation across models
 Performed a 70/30 train-test split
 Standardized target variable encoding
 
-Models Implemented
+***Models Implemented***
 
 1. Logistic Regression
 Baseline interpretable model
@@ -49,12 +49,12 @@ Threshold Analysis
 
 To reflect real-world credit decision-making, probability thresholds were evaluated:
 
-Threshold	Behavior
+***Threshold	Behavior***
 0.5 -	Conservative classification (balanced baseline)
 0.4	- Best trade-off between sensitivity and specificity
 0.3	- High recall but aggressive rejection of good clients
 
-Model Performance
+***Model Performance***
 Logistic Regression (Best at threshold = 0.4)
 Accuracy: ~74%
 AUC: ~0.77
@@ -69,10 +69,10 @@ Sensitivity: 57.3%
 Specificity: 83.3%
 Balanced Accuracy: 70.3%
 
-ROC Curve Analysis
+***ROC Curve Analysis***
 The ROC curve evaluates model discrimination across all classification thresholds.
 
-Key Insights
+***Key Insights***
 Both models achieved similar predictive power (AUC ≈ 0.77)
 Logistic Regression performed slightly better in identifying defaulters
 XGBoost performed slightly better in protecting good clients
@@ -106,7 +106,7 @@ Run the R Markdown file:
 credit_risk_model.Rmd
 Click “Knit” to generate the HTML report
 
-Conclusion
+***Conclusion***
 
 Despite using a more complex ensemble method, XGBoost did not significantly outperform Logistic Regression in this structured dataset.
 
@@ -116,7 +116,7 @@ Simpler models can perform competitively in credit scoring tasks
 Proper preprocessing and encoding are critical
 Threshold tuning has a greater operational impact than model complexity
 
-Tools and Libraries
+***Tools and Libraries***
 R
 caret
 xgboost
