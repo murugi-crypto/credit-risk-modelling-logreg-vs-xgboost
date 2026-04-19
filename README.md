@@ -123,4 +123,30 @@ credit-risk-modelling/
 ├── README.md
 ├── credit_risk_model.Rmd
 ├── credit_risk_model.html
+```
+## How to Run
+1. Clone repository:
+git clone https://github.com/yourusername/credit-risk-modelling.git
+2. Open project in RStudio
+3. Install dependencies:
+install.packages(c("caret", "xgboost", "pROC", "ggplot2"))
+4. Run:
+- Open credit_risk_model.Rmd
+- Click Knit
 
+## Conclusion
+- Simpler models perform competitively in credit scoring tasks
+- Data preprocessing is critical
+- Threshold tuning has greater impact than model complexity
+
+## Tools
+- R
+- caret
+- xgboost
+- pROC
+- ggplot2
+
+## Author
+
+## Bridget Murugi
+### Actuarial Science | Credit Risk Modeling | Data Analytics
