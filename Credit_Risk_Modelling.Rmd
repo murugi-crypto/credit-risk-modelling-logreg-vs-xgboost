@@ -1,0 +1,229 @@
+---
+title: 'Credit Risk Modelling: Logistic Regression vs XGBoost'
+author: "Bridget Murugi"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```r
+{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+  )
+```markdown
+# Introduction
+
+This project develops and compares Logistic Regression and XGBoost models to predict credit default risk using the German Credit dataset.
+
+The focus is on predictive performance and business-relevant trade-offs between detecting defaulters and approving good clients.
+---
+# Data Loading
+```{r}
+url <- "https://raw.githubusercontent.com/selva86/datasets/master/GermanCredit.csv"
+data <- read.csv(url, stringsAsFactors = FALSE)
+
+head(data)
+```
+
+---
+
+# Target Variable Correction
+
+Ensure correct labeling:
+
+* 1 = Default (Bad)
+* 0 = Non-default (Good)
+
+```{r}
+table(data$credit_risk)
+
+data$credit_risk <- 1 - data$credit_risk
+
+table(data$credit_risk)
+```
+
+---
+
+# Data Preprocessing
+
+```{r}
+# Convert characters to factors
+data[] <- lapply(data, function(x) {
+  if (is.character(x)) as.factor(x) else x
+})
+
+library(caret)
+
+# One-hot encoding
+dummies <- dummyVars(credit_risk ~ ., data = data)
+data_encoded <- predict(dummies, newdata = data)
+data_encoded <- as.data.frame(data_encoded)
+
+data_encoded$credit_risk <- data$credit_risk
+```
+
+---
+
+# Train-Test Split
+
+```{r}
+set.seed(123)
+
+train_index <- sample(1:nrow(data_encoded), 0.7 * nrow(data_encoded))
+
+train <- data_encoded[train_index, ]
+test  <- data_encoded[-train_index, ]
+```
+
+---
+
+# Logistic Regression Model
+
+```{r}
+log_model <- glm(credit_risk ~ ., data = train, family = binomial)
+
+log_probs <- predict(log_model, test, type = "response")
+
+log_pred_05 <- ifelse(log_probs > 0.5, 1, 0)
+log_pred_04 <- ifelse(log_probs > 0.4, 1, 0)
+log_pred_03 <- ifelse(log_probs > 0.3, 1, 0)
+```
+
+---
+
+# Logistic Regression Evaluation
+
+```{r}
+library(caret)
+
+cm_log_05 <- confusionMatrix(as.factor(log_pred_05), as.factor(test$credit_risk), positive = "1")
+cm_log_04 <- confusionMatrix(as.factor(log_pred_04), as.factor(test$credit_risk), positive = "1")
+cm_log_03 <- confusionMatrix(as.factor(log_pred_03), as.factor(test$credit_risk), positive = "1")
+
+cm_log_05
+cm_log_04
+cm_log_03
+```
+
+**Interpretation:**
+
+* 0.5: Conservative (higher specificity)
+* 0.4: Best balance
+* 0.3: High recall, more false positives
+
+---
+
+# XGBoost Model
+
+```{r}
+library(xgboost)
+
+train_matrix <- as.matrix(train[, -ncol(train)])
+test_matrix  <- as.matrix(test[, -ncol(test)])
+
+dtrain <- xgb.DMatrix(data = train_matrix, label = train$credit_risk)
+dtest  <- xgb.DMatrix(data = test_matrix)
+
+params <- list(
+  objective = "binary:logistic",
+  eval_metric = "auc",
+  max_depth = 3,
+  eta = 0.05,
+  subsample = 0.8,
+  colsample_bytree = 0.8
+)
+
+xgb_model <- xgb.train(
+  params = params,
+  data = dtrain,
+  nrounds = 150
+)
+
+xgb_probs <- predict(xgb_model, dtest)
+
+xgb_pred_05 <- ifelse(xgb_probs > 0.5, 1, 0)
+xgb_pred_04 <- ifelse(xgb_probs > 0.4, 1, 0)
+xgb_pred_03 <- ifelse(xgb_probs > 0.3, 1, 0)
+```
+
+---
+
+# XGBoost Evaluation
+
+```{r}
+cm_xgb_05 <- confusionMatrix(as.factor(xgb_pred_05), as.factor(test$credit_risk), positive = "1")
+cm_xgb_04 <- confusionMatrix(as.factor(xgb_pred_04), as.factor(test$credit_risk), positive = "1")
+cm_xgb_03 <- confusionMatrix(as.factor(xgb_pred_03), as.factor(test$credit_risk), positive = "1")
+
+cm_xgb_05
+cm_xgb_04
+cm_xgb_03
+```
+
+---
+
+# ROC Curve and AUC
+
+```{r}
+library(pROC)
+
+roc_log <- roc(test$credit_risk, log_probs)
+roc_xgb <- roc(test$credit_risk, xgb_probs)
+
+auc_log <- auc(roc_log)
+auc_xgb <- auc(roc_xgb)
+
+auc_log
+auc_xgb
+```
+
+---
+
+# ROC Curve Visualization
+
+```{r}
+plot(roc_log, col = "blue", main = "ROC Curve: Logistic vs XGBoost")
+plot(roc_xgb, col = "red", add = TRUE)
+
+legend("bottomright",
+       legend = c("Logistic Regression", "XGBoost"),
+       col = c("blue", "red"),
+       lwd = 2)
+```
+
+---
+
+# Final Comparison
+
+* Logistic Regression AUC ≈ 0.77
+* XGBoost AUC ≈ 0.77
+
+Threshold = 0.4 provides the best trade-off between sensitivity and specificity.
+
+---
+
+# Business Interpretation
+
+* False Negatives → financial loss
+* False Positives → lost revenue
+
+Threshold tuning is critical in aligning model outputs with business objectives.
+
+---
+
+# Conclusion
+
+* Logistic Regression performs competitively despite simplicity
+* XGBoost offers marginal improvements in some areas
+* Threshold selection has a major impact on results
+* Proper preprocessing and labeling are essential
+
+---
+
+
+
